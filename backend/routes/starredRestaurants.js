@@ -48,7 +48,30 @@ router.get("/", (req, res) => {
 /**
  * Feature 7: Getting a specific starred restaurant.
  */
+router.get("/:id", (req, res) => {
+  const { id } = req.params;
 
+  const starredRestaurant = STARRED_RESTAURANTS.find((star) => {
+    return star.id === id;
+  });
+
+  if (!starredRestaurant) {
+    res.sendStatus(404);
+    return;
+  }
+
+  const restaurant = ALL_RESTAURANTS.find((restaurant) => {
+    return restaurant.id === starredRestaurant.restaurantId;
+  })
+
+  const response = {
+    id: starredRestaurant.id,
+    comment: starredRestaurant.comment,
+    name: restaurant.name
+  }
+
+  res.json(response);
+})
 
 
 /**
